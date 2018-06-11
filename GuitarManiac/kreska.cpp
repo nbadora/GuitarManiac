@@ -19,7 +19,6 @@ kreska::kreska(int size, float x, float y, string sciezka) //rozmiar minimum 2
 		sprite_kreski[1]->setTextureRect(IntRect(0, 0, 72, 72));
 		sprite_kreski[1]->setOrigin(36, 36);
 		sprite_kreski[1]->setPosition(x, y);
-		cout << "NADCHODZI KROPKA";
 	}
 	else
 	{
@@ -41,6 +40,10 @@ kreska::kreska(int size, float x, float y, string sciezka) //rozmiar minimum 2
 			sprite_kreski[i]->setPosition(x, y - i * 36);
 		}
 	}
+	trzyma = false;
+	puszczono = false;
+	dano_punkty = false;
+	punkty = 50;
 }
 
 
@@ -60,7 +63,7 @@ void kreska::move()
 {
 	for (int i = 0; i < dlugosc; i++)
 	{
-		sprite_kreski[i]->move(0, 1);
+		sprite_kreski[i]->move(0, 1);	//predkosc
 	}
 }
 
@@ -71,4 +74,26 @@ bool kreska::poza_oknem()
 		return true;
 	}
 	return false;
+}
+
+int kreska::daj_punkty()
+{
+	if (dlugosc>2)
+	{
+
+	}
+	else
+	{
+		if (trzyma == true)
+		{
+			trzyma = false;
+			dano_punkty = true;
+			return punkty;
+		}
+	}
+}
+
+Vector2f kreska::polozenie()
+{
+	return Vector2f(0, 0);
 }

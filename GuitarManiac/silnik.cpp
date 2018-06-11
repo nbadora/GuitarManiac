@@ -5,10 +5,6 @@
 
 silnik::silnik()
 {
-	VideoMode vmode(800, 600);
-	Vector2u vec2u(800, 600);
-	window.create(vmode, "Raptor", Style::Default);
-	window.setFramerateLimit(120);
 	
 	inGame = true;
 	VideoMode video_mode(800, 600);
@@ -53,6 +49,43 @@ void silnik::add_lines()
 	}
 }
 
+/*void silnik::checkIfGivePoints()
+{
+	for (int i=0;i<kreski.size();i++)
+	{
+		Vector2f polozenie = kreski[i].polozenie();
+		if (polozenie.x == 240)
+		{
+			if (polozenie.y < 536 && polozenie.y < 464 && Keyboard::isKeyPressed(Keyboard::Key::A))
+			{
+				
+			}
+		}
+		else if (polozenie.x == 340)
+		{
+			if (polozenie.y < 536 && polozenie.y < 464)
+			{
+
+			}
+		}
+		else if (polozenie.x == 440)
+		{
+			if (polozenie.y < 536 && polozenie.y < 464)
+			{
+
+			}
+		}
+		else if (polozenie.x == 540)
+		{
+			if (polozenie.y < 536 && polozenie.y < 464)
+			{
+
+			}
+		}
+	}
+}
+*/
+
 silnik::~silnik()
 {
 }
@@ -80,7 +113,7 @@ void silnik::start()
 			start_music = true;
 			music.play();
 		}
-		window.clear();
+		window.clear(Color::White);	// czysci okno
 
 		add_lines();
 		for (auto i : buttons)

@@ -20,6 +20,7 @@ void gracz::wyswietl_punkty(RenderWindow *window)
 	liczba_punktow.setFont(font);
 	liczba_punktow.setString(str);
 	liczba_punktow.setPosition(100 - (str_size / 2) * 30, 500);
+	liczba_punktow.setFillColor(Color::Black);
 	window->draw(liczba_punktow);
 
 }
@@ -28,4 +29,3 @@ void gracz::dodaj_punkty()
 {
 	punkty += 100;
 }
-

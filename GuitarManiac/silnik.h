@@ -27,5 +27,6 @@ public:
 	void rysuj_wszystko();
 
 	void add_lines();
+	void checkIfGivePoints();
 };
 
