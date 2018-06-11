@@ -49,42 +49,63 @@ void silnik::add_lines()
 	}
 }
 
-/*void silnik::checkIfGivePoints()
+void silnik::check_A_button()
 {
-	for (int i=0;i<kreski.size();i++)
+	for (auto i : kreski)
 	{
-		Vector2f polozenie = kreski[i].polozenie();
-		if (polozenie.x == 240)
+		if (i->poczatekKreski().x == 240)
 		{
-			if (polozenie.y < 536 && polozenie.y < 464 && Keyboard::isKeyPressed(Keyboard::Key::A))
+			i->odblokuj_punkty();
+			if (i->poczatekKreski().y >= 500 && i->koniecKreski().y <= 500)
 			{
-				
-			}
-		}
-		else if (polozenie.x == 340)
-		{
-			if (polozenie.y < 536 && polozenie.y < 464)
-			{
-
-			}
-		}
-		else if (polozenie.x == 440)
-		{
-			if (polozenie.y < 536 && polozenie.y < 464)
-			{
-
-			}
-		}
-		else if (polozenie.x == 540)
-		{
-			if (polozenie.y < 536 && polozenie.y < 464)
-			{
-
+				i->przyznaj_punkty(player_one);
 			}
 		}
 	}
 }
-*/
+void silnik::check_S_button()
+{
+	for (auto i : kreski)
+	{
+		if (i->poczatekKreski().x == 340)
+		{
+			i->odblokuj_punkty();
+			if (i->poczatekKreski().y >= 500 && i->koniecKreski().y <= 500)
+			{
+				i->przyznaj_punkty(player_one);
+			}
+		}
+	}
+}
+void silnik::check_D_button()
+{
+	for (auto i : kreski)
+	{
+		if (i->poczatekKreski().x == 440)
+		{
+			i->odblokuj_punkty();
+			if (i->poczatekKreski().y >= 500 && i->koniecKreski().y <= 500)
+			{
+				i->przyznaj_punkty(player_one);
+			}
+		}
+	}
+}
+void silnik::check_F_button()
+{
+	for (auto i : kreski)
+	{
+		if (i->poczatekKreski().x == 540)
+		{
+			i->odblokuj_punkty();
+			if (i->poczatekKreski().y >= 500 && i->koniecKreski().y <= 500)
+			{
+				i->przyznaj_punkty(player_one);
+			}
+		}
+	}
+}
+
 
 silnik::~silnik()
 {
@@ -96,6 +117,8 @@ void silnik::start()
 	Event eve;
 	while (inGame)
 	{
+
+		//event jest potrzebny by okno prawidlowo dzialalo + resize okna
 		while (window.pollEvent(eve))
 		{
 			if (eve.type == Event::Closed)
@@ -106,20 +129,90 @@ void silnik::start()
 			{
 				eve.Resized;
 			}
+			//czy gracz puscil klawisz
+			if (eve.type == eve.KeyReleased)
+			{
+				if (eve.key.code == Keyboard::A)
+				{
+					for (auto i : kreski)
+					{
+						if (i->poczatekKreski().x == 240)
+						{
+							if (i->poczatekKreski().y >= 500 && i->koniecKreski().y <= 500)
+							{
+								i->blokuj_punkty();
+							}
+						}
+					}
+				}
+				else if (eve.key.code == Keyboard::S)
+				{
+					for (auto i : kreski)
+					{
+						if (i->poczatekKreski().x == 340)
+						{
+							if (i->poczatekKreski().y >= 500 && i->koniecKreski().y <= 500)
+							{
+								i->blokuj_punkty();
+							}
+						}
+					}
+				}
+				else if (eve.key.code == Keyboard::D)
+				{
+					for (auto i : kreski)
+					{
+						if (i->poczatekKreski().x == 440)
+						{
+							if (i->poczatekKreski().y >= 500 && i->koniecKreski().y <= 500)
+							{
+								i->blokuj_punkty();
+							}
+						}
+					}
+				}
+				else if (eve.key.code == Keyboard::F)
+				{
+					for (auto i : kreski)
+					{
+						if (i->poczatekKreski().x == 540)
+						{
+							if (i->poczatekKreski().y >= 500 && i->koniecKreski().y <= 500)
+							{
+								i->blokuj_punkty();
+							}
+						}
+					}
+				}
+			}
+		}
+		if (Keyboard::isKeyPressed(Keyboard::Key::A))
+		{
+			check_A_button();
+		}
+		if (Keyboard::isKeyPressed(Keyboard::Key::S))
+		{
+			check_S_button();
+		}
+		if (Keyboard::isKeyPressed(Keyboard::Key::D))
+		{
+			check_D_button();
+		}
+		if (Keyboard::isKeyPressed(Keyboard::Key::F))
+		{
+			check_F_button();
 		}
 
-		if (!start_music)
-		{
-			start_music = true;
-			music.play();
-		}
 		window.clear(Color::White);	// czysci okno
 
 		add_lines();
+
+		//rysuje przyciski
 		for (auto i : buttons)
 		{
 			window.draw(*i);
 		}
+		//usuwa kresi gdy sa poza oknem
 		for (int i=0; i< kreski.size();i++)
 		{
 			kreski[i]->move();
@@ -129,21 +222,22 @@ void silnik::start()
 				kreski.erase(kreski.begin() +i);
 			}
 		}
+		//rysuje pozostale kreski
 		for (auto i : kreski)
 		{
 			i->rysuj_kreske(&window);
 		}
+		//wyswietla aktualne punkty
 		player_one.wyswietl_punkty(&window);
 		
+		//wyswietla okno
 		window.display();
 
-		if (zegar.getElapsedTime().asMilliseconds() > 1000)
+		//dodaje punkty bez przerwy
+		/*if (zegar.getElapsedTime().asMilliseconds() > 1000)
 		{
 			zegar.restart();
 			player_one.dodaj_punkty();
-		}
-
-
-	
+		}*/
 	}
 }

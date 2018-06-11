@@ -27,6 +27,10 @@ public:
 	void rysuj_wszystko();
 
 	void add_lines();
-	void checkIfGivePoints();
+	void check_A_button();
+	void check_S_button();
+	void check_D_button();
+	void check_F_button();
+
 };
 

@@ -40,11 +40,28 @@ kreska::kreska(int size, float x, float y, string sciezka) //rozmiar minimum 2
 			sprite_kreski[i]->setPosition(x, y - i * 36);
 		}
 	}
-	trzyma = false;
-	puszczono = false;
-	dano_punkty = false;
-	punkty = 50;
+	trzyma_przycisk = false;
+	przyznaje_punkty = true;
+	zloty = false;
+	actP = 0;
+	maxP = (size-2) *72 *100;
 }
+
+
+Vector2f kreska::poczatekKreski()
+{
+	Vector2f poczatek = sprite_kreski[0]->getPosition();
+	poczatek.y += 36;
+	return poczatek;
+}
+
+Vector2f kreska::koniecKreski()
+{
+	Vector2f koniec = sprite_kreski[sprite_kreski.size()-1]->getPosition();
+	koniec.y -= 36;
+	return koniec;
+}
+
 
 
 kreska::~kreska()
@@ -76,21 +93,41 @@ bool kreska::poza_oknem()
 	return false;
 }
 
-int kreska::daj_punkty()
+void kreska::przyznaj_punkty(gracz &player)
 {
-	if (dlugosc>2)
+	if (trzyma_przycisk && przyznaje_punkty)
 	{
-
+		if (odstep_miedzy_punktami.getElapsedTime().asMilliseconds() > 50)
+		{
+			player.dodaj_punkty();
+			actP += 100;
+			odstep_miedzy_punktami.restart();
+		}
 	}
 	else
 	{
-		if (trzyma == true)
-		{
-			trzyma = false;
-			dano_punkty = true;
-			return punkty;
-		}
+		//kara za niepotrzebne naciskanie
 	}
+}
+
+void kreska::odblokuj_punkty()
+{
+	trzyma_przycisk = true;
+}
+
+//do poprawienia
+void kreska::blokuj_punkty()
+{
+	if (maxP <= actP)
+	{
+		zloty = true;
+		cout << "udalo sie\n";
+	}
+	else
+	{
+		cout << "nie udalo sie\n";
+	}
+	przyznaje_punkty = false;
 }
 
 Vector2f kreska::polozenie()
