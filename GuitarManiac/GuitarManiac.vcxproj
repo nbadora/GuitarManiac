@@ -23,7 +23,7 @@
     <ProjectGuid>{D51251E8-4DA6-46C5-A961-FE27D15B3761}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>GuitarManiac</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -164,6 +164,7 @@
     <ClInclude Include="licznik.h" />
     <ClInclude Include="obiekt.h" />
     <ClInclude Include="przycisk.h" />
+    <ClInclude Include="pulsacyjny.h" />
     <ClInclude Include="silnik.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -178,6 +179,7 @@
     <ClCompile Include="licznik.cpp" />
     <ClCompile Include="obiekt.cpp" />
     <ClCompile Include="przycisk.cpp" />
+    <ClCompile Include="pulsacyjny.cpp" />
     <ClCompile Include="silnik.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

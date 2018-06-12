@@ -18,6 +18,7 @@ private:
 	bool start_music;
 	bool inGame;
 	Sprite background;
+	Texture bg_texture;
 public:
 	
 	

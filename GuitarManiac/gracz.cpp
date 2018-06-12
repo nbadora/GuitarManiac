@@ -5,7 +5,7 @@
 gracz::gracz()
 {
 	punkty = 0;
-	font.loadFromFile("deter.ttf");
+	font.loadFromFile("WITCB.ttf");
 }
 
 
@@ -19,7 +19,7 @@ void gracz::wyswietl_punkty(RenderWindow *window)
 	int str_size = str.size();
 	liczba_punktow.setFont(font);
 	liczba_punktow.setString(str);
-	liczba_punktow.setPosition(100 - (str_size / 2) * 30, 500);
+	liczba_punktow.setPosition(100 - (str_size / 2) * 15, 495);
 	liczba_punktow.setFillColor(Color::Black);
 	window->draw(liczba_punktow);
 

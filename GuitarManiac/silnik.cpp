@@ -13,18 +13,19 @@ silnik::silnik()
 
 	srand(time(NULL));//do losowego generowania
 
-	buttons.push_back(new przycisk("grafiki/redbutton.png", 240, 500));
-	buttons.push_back(new przycisk("grafiki/bluebutton.png", 340, 500));
-	buttons.push_back(new przycisk("grafiki/greenbutton.png", 440, 500));
-	buttons.push_back(new przycisk("grafiki/violetbutton.png", 540, 500));
+	/*buttons.push_back(new przycisk("grafiki/redbutton.png", 250, 500));
+	buttons.push_back(new przycisk("grafiki/bluebutton.png", 350, 500));
+	buttons.push_back(new przycisk("grafiki/greenbutton.png", 450, 500));
+	buttons.push_back(new przycisk("grafiki/violetbutton.png", 550, 500));*/
 
 	music.openFromFile("dragonforce.wav");
 	start_music = false;
-	Texture bg_texture;
 	bg_texture.loadFromFile("grafiki/back.png");
 	background.setTexture(bg_texture);
-	
-	background.setTextureRect(IntRect(0, 0, 800, 600));
+	background.setPosition(0, 0);
+	//background.setTextureRect(IntRect(0, 0, 800, 600));
+
+	music.setVolume(5);
 }
 
 void silnik::add_lines()
@@ -35,19 +36,19 @@ void silnik::add_lines()
 		{
 		case 0:
 		{
-			kreski.push_back(new kreska(rand() % 8 + 2,240, rand() % 400 - 800, "grafiki/redcos.png"));
+			kreski.push_back(new kreska(rand() % 8 + 2,250, rand() % 400 - 800, "grafiki/redcos.png"));
 		}
 		case 1:
 		{
-			kreski.push_back(new kreska(rand() % 8 + 2, 340, rand() % 400 - 800, "grafiki/bluecos.png"));
+			kreski.push_back(new kreska(rand() % 8 + 2, 350, rand() % 400 - 800, "grafiki/bluecos.png"));
 		}
 		case 2:
 		{
-			kreski.push_back(new kreska(rand() % 8 + 2, 440, rand() % 400 - 800, "grafiki/greencos.png"));
+			kreski.push_back(new kreska(rand() % 8 + 2, 450, rand() % 400 - 800, "grafiki/greencos.png"));
 		}
 		case 3:
 		{
-			kreski.push_back(new kreska(rand() % 8 + 2, 540, rand() % 400 - 800, "grafiki/violetcos.png"));
+			kreski.push_back(new kreska(rand() % 8 + 2, 550, rand() % 400 - 800, "grafiki/violetcos.png"));
 		}
 		}
 	}
@@ -57,7 +58,7 @@ void silnik::check_A_button()
 {
 	for (auto i : kreski)
 	{
-		if (i->poczatekKreski().x == 240)
+		if (i->poczatekKreski().x == 250)
 		{
 			i->odblokuj_punkty();
 			if (i->poczatekKreski().y >= 500 && i->koniecKreski().y <= 500)
@@ -71,7 +72,7 @@ void silnik::check_S_button()
 {
 	for (auto i : kreski)
 	{
-		if (i->poczatekKreski().x == 340)
+		if (i->poczatekKreski().x == 350)
 		{
 			i->odblokuj_punkty();
 			if (i->poczatekKreski().y >= 500 && i->koniecKreski().y <= 500)
@@ -85,7 +86,7 @@ void silnik::check_D_button()
 {
 	for (auto i : kreski)
 	{
-		if (i->poczatekKreski().x == 440)
+		if (i->poczatekKreski().x == 450)
 		{
 			i->odblokuj_punkty();
 			if (i->poczatekKreski().y >= 500 && i->koniecKreski().y <= 500)
@@ -99,7 +100,7 @@ void silnik::check_F_button()
 {
 	for (auto i : kreski)
 	{
-		if (i->poczatekKreski().x == 540)
+		if (i->poczatekKreski().x == 550)
 		{
 			i->odblokuj_punkty();
 			if (i->poczatekKreski().y >= 500 && i->koniecKreski().y <= 500)
@@ -117,6 +118,7 @@ silnik::~silnik()
 
 void silnik::start()
 {
+	pulsacyjny ef1(250, 500);
 	Clock zegar;
 	Event eve;
 	music.play();
@@ -124,6 +126,8 @@ void silnik::start()
 	{
 		window.clear();	// czysci okno
 		window.draw(background); //rysuje tlo
+		window.draw(ef1);
+		ef1.next_frame();
 		//event jest potrzebny by okno prawidlowo dzialalo + resize okna
 		while (window.pollEvent(eve))
 		{
@@ -142,7 +146,7 @@ void silnik::start()
 				{
 					for (auto i : kreski)
 					{
-						if (i->poczatekKreski().x == 240)
+						if (i->poczatekKreski().x == 250)
 						{
 							if (i->poczatekKreski().y >= 500 && i->koniecKreski().y <= 500)
 							{
@@ -155,7 +159,7 @@ void silnik::start()
 				{
 					for (auto i : kreski)
 					{
-						if (i->poczatekKreski().x == 340)
+						if (i->poczatekKreski().x == 350)
 						{
 							if (i->poczatekKreski().y >= 500 && i->koniecKreski().y <= 500)
 							{
@@ -168,7 +172,7 @@ void silnik::start()
 				{
 					for (auto i : kreski)
 					{
-						if (i->poczatekKreski().x == 440)
+						if (i->poczatekKreski().x == 450)
 						{
 							if (i->poczatekKreski().y >= 500 && i->koniecKreski().y <= 500)
 							{
@@ -181,7 +185,7 @@ void silnik::start()
 				{
 					for (auto i : kreski)
 					{
-						if (i->poczatekKreski().x == 540)
+						if (i->poczatekKreski().x == 550)
 						{
 							if (i->poczatekKreski().y >= 500 && i->koniecKreski().y <= 500)
 							{

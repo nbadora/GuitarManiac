@@ -44,7 +44,7 @@ kreska::kreska(int size, float x, float y, string sciezka) //rozmiar minimum 2
 	przyznaje_punkty = true;
 	zloty = false;
 	actP = 0;
-	maxP = (size-2) *72 *100;
+	maxP = (size-2) *100;		//trzeba poprawic max pkt, chyba *72
 }
 
 
@@ -102,6 +102,10 @@ void kreska::przyznaj_punkty(gracz &player)
 			player.dodaj_punkty();
 			actP += 100;
 			odstep_miedzy_punktami.restart();
+			if (maxP <= actP)
+			{
+				zloty = true;
+			}
 		}
 	}
 	else
@@ -125,9 +129,51 @@ void kreska::blokuj_punkty()
 	}
 	else
 	{
+		texture.loadFromFile("grafiki/greycos.png");
+		for (int i = 0; i < sprite_kreski.size(); i++)
+		{
+			if (i == 0)
+			{
+				sprite_kreski[0]->setTexture(texture);
+				sprite_kreski[0]->setTextureRect(IntRect(0, 144, 72, 72));
+			}
+			else if (i < sprite_kreski.size() - 1)
+			{
+				sprite_kreski[i]->setTexture(texture);
+				sprite_kreski[i]->setTextureRect(IntRect(0, 72, 72, 72));
+			}
+			else if (i == sprite_kreski.size() - 1)
+			{
+				sprite_kreski[sprite_kreski.size() - 1]->setTexture(texture);
+				sprite_kreski[sprite_kreski.size() - 1]->setTextureRect(IntRect(0, 0, 72, 72));
+			}
+		}
 		cout << "nie udalo sie\n";
 	}
 	przyznaje_punkty = false;
+
+	if (zloty)
+	{
+		texture.loadFromFile("grafiki/goldcos.png");
+		for (int i = 0; i < sprite_kreski.size(); i++)
+		{
+			if (i == 0)
+			{
+				sprite_kreski[0]->setTexture(texture);
+				sprite_kreski[0]->setTextureRect(IntRect(0, 144, 72, 72));
+			}
+			else if (i < sprite_kreski.size() - 1)
+			{
+				sprite_kreski[i]->setTexture(texture);
+				sprite_kreski[i]->setTextureRect(IntRect(0, 72, 72, 72));
+			}
+			else if (i == sprite_kreski.size()-1)
+			{
+				sprite_kreski[sprite_kreski.size() - 1]->setTexture(texture);
+				sprite_kreski[sprite_kreski.size() - 1]->setTextureRect(IntRect(0, 0, 72, 72));
+			}
+		}
+	}
 }
 
 Vector2f kreska::polozenie()
