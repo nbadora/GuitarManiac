@@ -5,6 +5,8 @@ using namespace std;
 using namespace sf;
 #include "kreska.h"
 #include "gracz.h"
+#include <vector>
+#include "pulsacyjny.h"
 
 class silnik
 {
@@ -19,6 +21,9 @@ private:
 	bool inGame;
 	Sprite background;
 	Texture bg_texture;
+	Clock muteTime;
+
+	vector <pulsacyjny> efekty_pulasacyjne;
 public:
 	
 	
@@ -33,6 +38,9 @@ public:
 	void check_S_button();
 	void check_D_button();
 	void check_F_button();
+
+	void kreski_poza_polem();
+
 
 };
 

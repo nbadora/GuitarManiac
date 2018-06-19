@@ -16,20 +16,21 @@ private:
 	int maxP;
 	int actP;
 	Clock odstep_miedzy_punktami;
+	bool bonusGiven = false;
 public:
 	kreska(int size, float x, float y, string sciezka);
 	~kreska();
 
-	void rysuj_kreske(RenderWindow *window);
-	void move();
-	bool poza_oknem();
-	void przyznaj_punkty(gracz &player);
+	void rysuj_kreske(RenderWindow *window);	//rysuje kreske na oknie
+	void move();	//przesuwa kreske
+	bool poza_oknem();	//sprawdza czy kreska jest poza oknem - usuwa j¹
+	bool przyznaj_punkty(gracz &player);	//dodaje punkty graczowi, zwraca boola czy pokazac efekt czy nie
 	Vector2f polozenie();
-	Vector2f poczatekKreski();
-	Vector2f koniecKreski();
-	void blokuj_punkty();
-	void odblokuj_punkty();
-
+	Vector2f poczatekKreski();//zwraca poczatek kreski
+	Vector2f koniecKreski();//zwraca koniec kreski
+	void blokuj_punkty(gracz &player);	//niepozwala przyznawac wiecej punktow
+	void odblokuj_punkty();	//odblokowuje przyznawanie punktow
+	bool sprawdz_bonus();	//zwraca czy gold =true or false
 
 };
 

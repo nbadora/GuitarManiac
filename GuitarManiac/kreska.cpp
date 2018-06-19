@@ -93,18 +93,20 @@ bool kreska::poza_oknem()
 	return false;
 }
 
-void kreska::przyznaj_punkty(gracz &player)
+bool kreska::przyznaj_punkty(gracz &player)
 {
-	if (trzyma_przycisk && przyznaje_punkty)
+	bool wyswietl_efekt = false;
+	if (trzyma_przycisk && przyznaje_punkty)	//sprawdza czy gracz trzyma przycisk i moze dostawac punkty
 	{
-		if (odstep_miedzy_punktami.getElapsedTime().asMilliseconds() > 50)
+		wyswietl_efekt = true;
+		if (odstep_miedzy_punktami.getElapsedTime().asMilliseconds() > 50)	//czas od ostatniego dodania punktow
 		{
-			player.dodaj_punkty();
-			actP += 100;
-			odstep_miedzy_punktami.restart();
-			if (maxP <= actP)
+			player.dodaj_punkty();	//dodjae punkty
+			actP += 100;	//aktualnie zdobte pnkty z kreski
+			odstep_miedzy_punktami.restart();	//restart zegara
+			if (maxP <= actP)	//sprawdz czy zdobylismy prawie maksa za kreske
 			{
-				zloty = true;
+				zloty = true;	//kolor kreski na zloty
 			}
 		}
 	}
@@ -112,6 +114,7 @@ void kreska::przyznaj_punkty(gracz &player)
 	{
 		//kara za niepotrzebne naciskanie
 	}
+	return wyswietl_efekt;
 }
 
 void kreska::odblokuj_punkty()
@@ -119,8 +122,13 @@ void kreska::odblokuj_punkty()
 	trzyma_przycisk = true;
 }
 
+bool kreska::sprawdz_bonus()
+{
+	return zloty;
+}
+
 //do poprawienia
-void kreska::blokuj_punkty()
+void kreska::blokuj_punkty(gracz &player)
 {
 	if (maxP <= actP)
 	{
@@ -149,11 +157,17 @@ void kreska::blokuj_punkty()
 			}
 		}
 		cout << "nie udalo sie\n";
+		player.resetBonus();
 	}
 	przyznaje_punkty = false;
 
 	if (zloty)
 	{
+		if (!bonusGiven)
+		{
+			bonusGiven = true;
+			player.zwieksz_bonus();
+		}
 		texture.loadFromFile("grafiki/goldcos.png");
 		for (int i = 0; i < sprite_kreski.size(); i++)
 		{

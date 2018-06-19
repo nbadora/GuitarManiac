@@ -4,8 +4,10 @@
 
 gracz::gracz()
 {
+	bonus = 1;
 	punkty = 0;
 	font.loadFromFile("WITCB.ttf");
+	wasReset = false;
 }
 
 
@@ -23,9 +25,47 @@ void gracz::wyswietl_punkty(RenderWindow *window)
 	liczba_punktow.setFillColor(Color::Black);
 	window->draw(liczba_punktow);
 
+	str.clear();
+	str.append("x");
+	str.append( to_string(bonus));
+	str_size = str.size();
+	liczba_punktow.setString(str);
+	liczba_punktow.setPosition(700 - (str_size / 2) * 15, 495);
+	window->draw(liczba_punktow);
 }
 
 void gracz::dodaj_punkty()
 {
-	punkty += 100;
+	punkty += 100*bonus;
+}
+
+void gracz::zwieksz_bonus()
+{
+	bonus++;
+	if (bonus > 10)
+	{
+		bonus = 10;
+	}
+	//(bonus > 3 ? bonus = 3 : bonus =bonus);
+}
+
+void gracz::resetBonus()
+{
+	bonus = 1;
+	wasReset = true;
+}
+
+bool gracz::returnReset()
+{
+	return wasReset;
+}
+
+void gracz::setResetFlag()
+{
+	wasReset = false;
+}
+
+int gracz::getBonus()
+{
+	return bonus;
 }

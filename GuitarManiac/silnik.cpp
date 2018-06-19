@@ -3,6 +3,7 @@
 
 
 
+
 silnik::silnik()
 {
 	
@@ -26,6 +27,14 @@ silnik::silnik()
 	//background.setTextureRect(IntRect(0, 0, 800, 600));
 
 	music.setVolume(5);
+
+	for (int i = 0; i < 4; i++)
+	{
+		pulsacyjny *wsk = new pulsacyjny(250 + i * 100, 500);
+		efekty_pulasacyjne.push_back(*wsk);
+	}
+
+	
 }
 
 void silnik::add_lines()
@@ -54,16 +63,20 @@ void silnik::add_lines()
 	}
 }
 
+
 void silnik::check_A_button()
 {
 	for (auto i : kreski)
 	{
-		if (i->poczatekKreski().x == 250)
+		if (i->poczatekKreski().x == 250)	//szuka kreski na polu A
 		{
-			i->odblokuj_punkty();
-			if (i->poczatekKreski().y >= 500 && i->koniecKreski().y <= 500)
+			i->odblokuj_punkty();			//pozwala dodawac punkty
+			if (i->poczatekKreski().y >= 500 && i->koniecKreski().y <= 500)	//sprawdza czy kreska jest na lini do klikania
 			{
-				i->przyznaj_punkty(player_one);
+				if (i->przyznaj_punkty(player_one))		//przynaje punkty jesli gracz trzyma odp. klawisz
+				{
+					efekty_pulasacyjne[0].odblokuj();
+				}
 			}
 		}
 	}
@@ -77,7 +90,10 @@ void silnik::check_S_button()
 			i->odblokuj_punkty();
 			if (i->poczatekKreski().y >= 500 && i->koniecKreski().y <= 500)
 			{
-				i->przyznaj_punkty(player_one);
+				if (i->przyznaj_punkty(player_one))		//przynaje punkty jesli gracz trzyma odp. klawisz
+				{
+					efekty_pulasacyjne[1].odblokuj();
+				}
 			}
 		}
 	}
@@ -91,7 +107,10 @@ void silnik::check_D_button()
 			i->odblokuj_punkty();
 			if (i->poczatekKreski().y >= 500 && i->koniecKreski().y <= 500)
 			{
-				i->przyznaj_punkty(player_one);
+				if (i->przyznaj_punkty(player_one))		//przynaje punkty jesli gracz trzyma odp. klawisz
+				{
+					efekty_pulasacyjne[2].odblokuj();
+				}
 			}
 		}
 	}
@@ -105,11 +124,15 @@ void silnik::check_F_button()
 			i->odblokuj_punkty();
 			if (i->poczatekKreski().y >= 500 && i->koniecKreski().y <= 500)
 			{
-				i->przyznaj_punkty(player_one);
+				if (i->przyznaj_punkty(player_one))		//przynaje punkty jesli gracz trzyma odp. klawisz
+				{
+					efekty_pulasacyjne[3].odblokuj();
+				}
 			}
 		}
 	}
 }
+
 
 
 silnik::~silnik()
@@ -118,7 +141,6 @@ silnik::~silnik()
 
 void silnik::start()
 {
-	pulsacyjny ef1(250, 500);
 	Clock zegar;
 	Event eve;
 	music.play();
@@ -126,8 +148,24 @@ void silnik::start()
 	{
 		window.clear();	// czysci okno
 		window.draw(background); //rysuje tlo
-		window.draw(ef1);
-		ef1.next_frame();
+
+		//sprawdza czy ma rysowac efekty
+		//korzystamy z iteratora it
+		for (vector <pulsacyjny>::iterator it = efekty_pulasacyjne.begin(); it != efekty_pulasacyjne.end(); it++)
+		{
+			it->zmien_kolory(player_one.getBonus());
+			if (it->czy_rsyowac())
+			{
+				window.draw(*it);//rysuje efekt
+				it->zablokuj();//blokuje rysowanie, bedzie odblokowane jesli dalej trzymamy klawisz
+			}
+			it->next_frame();
+		}
+
+	
+
+
+
 		//event jest potrzebny by okno prawidlowo dzialalo + resize okna
 		while (window.pollEvent(eve))
 		{
@@ -142,6 +180,7 @@ void silnik::start()
 			//czy gracz puscil klawisz
 			if (eve.type == eve.KeyReleased)
 			{
+
 				if (eve.key.code == Keyboard::A)
 				{
 					for (auto i : kreski)
@@ -150,20 +189,21 @@ void silnik::start()
 						{
 							if (i->poczatekKreski().y >= 500 && i->koniecKreski().y <= 500)
 							{
-								i->blokuj_punkty();
+								i->blokuj_punkty(player_one);
 							}
 						}
 					}
 				}
 				else if (eve.key.code == Keyboard::S)
 				{
+				
 					for (auto i : kreski)
 					{
 						if (i->poczatekKreski().x == 350)
 						{
 							if (i->poczatekKreski().y >= 500 && i->koniecKreski().y <= 500)
 							{
-								i->blokuj_punkty();
+								i->blokuj_punkty(player_one);
 							}
 						}
 					}
@@ -176,7 +216,7 @@ void silnik::start()
 						{
 							if (i->poczatekKreski().y >= 500 && i->koniecKreski().y <= 500)
 							{
-								i->blokuj_punkty();
+								i->blokuj_punkty(player_one);
 							}
 						}
 					}
@@ -189,13 +229,14 @@ void silnik::start()
 						{
 							if (i->poczatekKreski().y >= 500 && i->koniecKreski().y <= 500)
 							{
-								i->blokuj_punkty();
+								i->blokuj_punkty(player_one);
 							}
 						}
 					}
 				}
 			}
 		}
+		//wywoluje odpowiednia metode w zaleznosci od trzymanego klawisza
 		if (Keyboard::isKeyPressed(Keyboard::Key::A))
 		{
 			check_A_button();
@@ -213,7 +254,18 @@ void silnik::start()
 			check_F_button();
 		}
 
-		
+		//WYCISZANIE PIOSENEK--------------------------------------
+		if (player_one.returnReset())
+		{
+			player_one.setResetFlag();
+			music.setVolume(1);
+			muteTime.restart();
+		}
+		if (muteTime.getElapsedTime().asMilliseconds() > 500)
+		{
+			music.setVolume(10);
+		}
+		//----------------------------------------------------------
 
 		add_lines();
 
