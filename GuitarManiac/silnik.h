@@ -47,6 +47,7 @@ public:
 	//----------------
 	void menu_gry(gameState &state);
 	void loadTop(gameState &state);
+	void nowa_gra(gameState &state);
 
 };
 

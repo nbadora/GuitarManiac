@@ -19,7 +19,7 @@ silnik::silnik()
 	buttons.push_back(new przycisk("grafiki/greenbutton.png", 450, 500));
 	buttons.push_back(new przycisk("grafiki/violetbutton.png", 550, 500));*/
 
-	music.openFromFile("dragonforce.wav");
+	//music.openFromFile("dragonforce.wav");
 	start_music = false;
 	bg_texture.loadFromFile("grafiki/back.png");
 	background.setTexture(bg_texture);
@@ -196,6 +196,89 @@ void silnik::loadTop(gameState &state)
 	{
 		cout << "Plik z wynikami nie istnieje!";
 	}
+}
+
+
+void silnik::nowa_gra(gameState &state)
+{
+	Text text;
+	Font font;
+	font.loadFromFile("WITCB.ttf");
+	text.setCharacterSize(50);
+	text.setFont(font);
+	text.setFillColor(Color::White);
+
+	fstream plik;
+	plik.open("piosenki.txt", std::fstream::in);
+	vector <string*> piosenki;
+	if (plik.is_open())
+	{
+		while (plik.good())
+		{
+			string tytul;
+			plik >> tytul;
+			piosenki.push_back(new string(tytul));
+		}
+		plik.close();
+
+		int wybor = 0;
+		while (state == WYBOR_PIOSENKI)
+		{
+			string tekst = *piosenki[wybor];
+			text.setString(tekst);
+			text.setPosition(400 - (tekst.size() / 2) * 18, 260);
+			window.clear(Color::Black);
+
+			Event eve;
+			window.clear(Color::Black);
+			while (window.pollEvent(eve))
+			{
+				if (eve.type == Event::Closed)
+				{
+					window.close();
+				}
+				if (eve.type == Event::Resized)
+				{
+					eve.Resized;
+				}
+				if (eve.type == eve.KeyPressed)
+				{
+					if (eve.key.code == Keyboard::Left)
+					{
+						wybor--;
+						if (wybor < 0)
+						{
+							wybor = piosenki.size() - 1;
+						}
+					}
+					if (eve.key.code == Keyboard::Right)
+					{
+						wybor++;
+						if (wybor >= piosenki.size())
+						{
+							wybor = 0;
+						}
+					}
+					//ENTER
+					if (eve.key.code == Keyboard::Return)
+					{
+						string path;
+						path.append(*piosenki[wybor]);
+						path.append(".wav");
+						music.openFromFile(path);
+						state = MENU;
+					}
+				}
+			}
+			window.draw(text);
+			window.display();
+		}
+	}
+	else
+	{
+
+	}
+
 }
 
 void silnik::menu_gry(gameState &state)
