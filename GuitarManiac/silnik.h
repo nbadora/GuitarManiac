@@ -8,6 +8,7 @@ using namespace sf;
 #include <vector>
 #include "pulsacyjny.h"
 #include "enum_gameState.h"
+#include <fstream>
 
 class silnik
 {
@@ -45,6 +46,7 @@ public:
 
 	//----------------
 	void menu_gry(gameState &state);
+	void loadTop(gameState &state);
 
 };
 

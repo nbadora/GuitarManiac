@@ -133,6 +133,71 @@ void silnik::check_F_button()
 	}
 }
 
+void silnik::loadTop(gameState &state)
+{
+	Text text;
+	Font font;
+	font.loadFromFile("WITCB.ttf");
+	text.setCharacterSize(50);
+	text.setFont(font);
+	text.setPosition(50, 0);
+	text.setFillColor(Color::White);
+
+	fstream plik;
+	plik.open("Top10.txt", std::fstream::in);
+	string tekst;
+	if (plik.is_open())
+	{
+		for (int i = 0; i < 10; i++)
+		{
+			string s;
+			tekst.append(to_string(i + 1));
+			tekst.append(".");
+			plik >> s;
+			tekst.append(s);
+			tekst.append(" ");
+
+			plik >> s;
+			tekst.append(s);
+			tekst.append(" ");
+
+			plik >> s;
+			tekst.append(s);
+			tekst.append("\n");
+		}
+		plik.close();
+		while (state == NAJLEPSI_GRACZE)
+		{
+			text.setString(tekst);
+			window.clear(Color::Black);
+
+			Event eve;
+			window.clear(Color::Black);
+			while (window.pollEvent(eve))
+			{
+				if (eve.type == Event::Closed)
+				{
+					window.close();
+				}
+				if (eve.type == Event::Resized)
+				{
+					eve.Resized;
+				}
+				if (eve.type == Event::KeyPressed && eve.key.code == Keyboard::Return)
+				{
+					state = MENU;
+				}
+			}
+			window.draw(text);
+			window.display();
+		}
+	}
+	else
+	{
+		cout << "Plik z wynikami nie istnieje!";
+	}
+}
+
 void silnik::menu_gry(gameState &state)
 {
 	string tekst = "Nowa Runda \n  Top 10   \nWyjscie z gry\n";
