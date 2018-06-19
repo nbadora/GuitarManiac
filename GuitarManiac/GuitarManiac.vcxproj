@@ -159,6 +159,7 @@
     <ClInclude Include="ball.h" />
     <ClInclude Include="efekt_dzwiekowy.h" />
     <ClInclude Include="efekt_wizualny.h" />
+    <ClInclude Include="enum_gameState.h" />
     <ClInclude Include="gracz.h" />
     <ClInclude Include="kreska.h" />
     <ClInclude Include="licznik.h" />

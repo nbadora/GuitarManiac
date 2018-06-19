@@ -133,6 +133,99 @@ void silnik::check_F_button()
 	}
 }
 
+void silnik::menu_gry(gameState &state)
+{
+	string tekst = "Nowa Runda \n  Top 10   \nWyjscie z gry\n";
+	Text text;
+	Font font;
+	font.loadFromFile("WITCB.ttf");
+	text.setCharacterSize(60);
+	text.setFont(font);
+	text.setString(tekst);
+	text.setPosition(260, 180);
+	text.setFillColor(Color::White);
+
+	string wsk;
+	int pos = 1;
+	Text wskaznik;
+	wskaznik.setCharacterSize(60);
+	wskaznik.setFont(font);
+	wskaznik.setFillColor(Color::White);
+	while (state == MENU)
+	{
+		Event eve;
+		window.clear(Color::Black);
+		while (window.pollEvent(eve))
+		{
+			if (eve.type == Event::Closed)
+			{
+				window.close();
+			}
+			if (eve.type == Event::Resized)
+			{
+				eve.Resized;
+			}
+			if (eve.type == eve.KeyPressed)
+			{
+				if (eve.key.code == Keyboard::Down)
+				{
+					pos++;
+				}
+				if (eve.key.code == Keyboard::Up)
+				{
+					pos--;
+				}
+				//ENTER
+				if (eve.key.code == Keyboard::Return)
+				{
+					if (pos == 1)
+					{
+						state = WYBOR_PIOSENKI;
+						//wybr piosenki + nazwa gracza
+					}
+					if (pos == 2)
+					{
+						state = NAJLEPSI_GRACZE;
+						//top 10
+					}
+					if (pos == 3)
+					{
+						state = WYJSCIE;
+						//wyjscie
+					}
+				}
+			}
+			//pozycja wskaznika
+			if (pos <= 1)
+			{
+				pos = 1;
+				wsk.clear();
+				wsk.append(">           <");
+				wskaznik.setString(wsk);
+				wskaznik.setPosition(215, 180);
+			}
+			else if (pos == 2)
+			{
+				wsk.clear();
+				wsk.append(">      <");
+				wskaznik.setString(wsk);
+				wskaznik.setPosition(280, 250);
+			}
+			else if (pos >= 3)
+			{
+				pos = 3;
+				wsk.clear();
+				wsk.append(">           <");
+				wskaznik.setString(wsk);
+				wskaznik.setPosition(215, 320);
+			}
+			window.draw(wskaznik);
+			window.draw(text);
+			window.display();
+		}
+	}
+}
+
 
 
 silnik::~silnik()

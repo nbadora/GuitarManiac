@@ -7,6 +7,7 @@ using namespace sf;
 #include "gracz.h"
 #include <vector>
 #include "pulsacyjny.h"
+#include "enum_gameState.h"
 
 class silnik
 {
@@ -41,6 +42,9 @@ public:
 
 	void kreski_poza_polem();
 
+
+	//----------------
+	void menu_gry(gameState &state);
 
 };
 
