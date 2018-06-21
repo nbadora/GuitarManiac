@@ -24,6 +24,7 @@ silnik::silnik()
 	bg_texture.loadFromFile("grafiki/back.png");
 	background.setTexture(bg_texture);
 	background.setPosition(0, 0);
+	menu_texture.loadFromFile("grafiki/back1.png");
 	//background.setTextureRect(IntRect(0, 0, 800, 600));
 
 	music.setVolume(5);
@@ -135,13 +136,14 @@ void silnik::check_F_button()
 
 void silnik::loadTop(gameState &state)
 {
+	background.setTexture(menu_texture);
 	Text text;
 	Font font;
 	font.loadFromFile("WITCB.ttf");
 	text.setCharacterSize(50);
 	text.setFont(font);
 	text.setPosition(50, 0);
-	text.setFillColor(Color::White);
+	text.setFillColor(Color::Black);
 
 	fstream plik;
 	plik.open("Top10.txt", std::fstream::in);
@@ -169,7 +171,7 @@ void silnik::loadTop(gameState &state)
 		while (state == NAJLEPSI_GRACZE)
 		{
 			text.setString(tekst);
-			window.clear(Color::Black);
+			window.clear();
 
 			Event eve;
 			window.clear(Color::Black);
@@ -188,6 +190,7 @@ void silnik::loadTop(gameState &state)
 					state = MENU;
 				}
 			}
+			window.draw(background);
 			window.draw(text);
 			window.display();
 		}
@@ -201,12 +204,14 @@ void silnik::loadTop(gameState &state)
 
 void silnik::nowa_gra(gameState &state)
 {
+	
+	background.setTexture(menu_texture);
 	Text text;
 	Font font;
 	font.loadFromFile("WITCB.ttf");
 	text.setCharacterSize(50);
 	text.setFont(font);
-	text.setFillColor(Color::White);
+	text.setFillColor(Color::Black);
 
 	fstream plik;
 	plik.open("piosenki.txt", std::fstream::in);
@@ -264,25 +269,106 @@ void silnik::nowa_gra(gameState &state)
 					{
 						string path;
 						path.append(*piosenki[wybor]);
+						player_one.setSong(*piosenki[wybor]);
 						path.append(".wav");
 						music.openFromFile(path);
 						state = MENU;
 					}
 				}
 			}
+			window.draw(background);
 			window.draw(text);
 			window.display();
 		}
 	}
 	else
 	{
-
+	//co zrobic gdy pliku nie ma
 	}
 
 }
 
+void silnik::nowy_gracz()
+{
+	background.setTexture(menu_texture);
+	string tekst = "Podaj nazwe uzytkownika:";
+	string nick;
+	Text text;
+
+	Font font;
+	font.loadFromFile("WITCB.ttf");
+	text.setCharacterSize(60);
+	text.setFont(font);
+	text.setString(tekst);
+	text.setPosition(100, 180);
+	text.setFillColor(Color::Black);
+
+	bool good = false;
+
+	while (!good)
+	{
+		Event eve;
+		window.clear();
+		while (window.pollEvent(eve))
+		{
+			if (eve.type == Event::Closed)
+			{
+				window.close();
+			}
+			if (eve.type == Event::Resized)
+			{
+				eve.Resized;
+			}
+
+			else if (eve.type == sf::Event::TextEntered)
+			{
+				if (eve.text.unicode == '\b')
+				{
+					if (nick.size() > 0)
+					{
+						nick.erase(nick.size() - 1, 1);
+					}
+				}
+				//ENTER
+				else if (eve.text.unicode == '\r')
+				{
+					//if nick jest dobry to zmien good  na true
+					//regex
+					cout << "good";
+					good = true;
+					player_one.setName(nick);
+				}
+				else if (eve.text.unicode < 128)
+				{
+					nick += static_cast<char>(eve.text.unicode);
+				}
+				cout << nick << endl;
+
+			}
+		
+		}
+
+		window.draw(background);
+		text.setPosition(100, 180);
+		text.setString(tekst);
+		window.draw(text);
+
+		text.setPosition(400-nick.size()*12,240);
+		text.setString(nick);
+		window.draw(text);
+
+		window.display();
+
+
+	}
+}
+
+
+
+
 void silnik::menu_gry(gameState &state)
 {
+	background.setTexture(menu_texture);
 	string tekst = "Nowa Runda \n  Top 10   \nWyjscie z gry\n";
 	Text text;
 	Font font;
@@ -291,14 +377,14 @@ void silnik::menu_gry(gameState &state)
 	text.setFont(font);
 	text.setString(tekst);
 	text.setPosition(260, 180);
-	text.setFillColor(Color::White);
+	text.setFillColor(Color::Black);
 
 	string wsk;
 	int pos = 1;
 	Text wskaznik;
 	wskaznik.setCharacterSize(60);
 	wskaznik.setFont(font);
-	wskaznik.setFillColor(Color::White);
+	wskaznik.setFillColor(Color::Black);
 	while (state == MENU)
 	{
 		Event eve;
@@ -367,6 +453,7 @@ void silnik::menu_gry(gameState &state)
 				wskaznik.setString(wsk);
 				wskaznik.setPosition(215, 320);
 			}
+			window.draw(background);
 			window.draw(wskaznik);
 			window.draw(text);
 			window.display();
@@ -380,13 +467,127 @@ silnik::~silnik()
 {
 }
 
+
+void silnik::zapisz_wynik()
+{
+	fstream plik;
+	plik.open("Top10.txt", std::fstream::in);
+	string tekst;
+	lista *head = nullptr;
+	lista *wsk = nullptr;
+	cout << "1\n";
+	if (plik.is_open())
+	{
+		cout << "open666\n";
+		//wczytywanie do listy
+		for (int i = 0; i < 10; i++)
+		{
+			string n;
+			string p;
+			string pkt;
+			if (head == nullptr)
+			{
+				head = new lista();
+				plik >> n >> pkt >> p;
+				head->nick = n;
+				head->piosenka = p;
+				head->punkty = atoi(pkt.c_str());
+			}
+			else
+			{
+				lista * aux = head;
+				head->next = new lista();
+				head = head->next;
+
+				plik >> n >> pkt >> p;
+				head->nick = n;
+				head->piosenka = p;
+				head->punkty = atoi(pkt.c_str());
+
+				aux->next = head;
+				head->pop = aux;			
+			}
+			
+		}
+		
+	}
+	//dodaje nowy wynik
+	head->next = new lista();
+	head->next->pop = head;
+	head = head->next;
+	head->nick = player_one.getName();
+	head->piosenka = player_one.getSong();
+	head->punkty = player_one.getPoints();
+	
+	//powrot na poczatek
+	wsk = head;
+	while (wsk != nullptr)
+	{
+		head = wsk;
+		cout << head->punkty << endl;
+		wsk = wsk->pop;
+	}
+
+	wsk = head;
+	cout << wsk->nick << " " << wsk->punkty << " " << wsk->piosenka << endl;
+	lista *aux = head;
+	//sortowanie
+	while (wsk != nullptr)
+	{
+		cout << "sort\n";
+		aux = wsk->next;
+		while (aux != nullptr)
+		{
+			if (wsk->punkty < aux->punkty)
+			{
+				string n = wsk->nick;
+				string p = wsk->piosenka;
+				int pkt = wsk->punkty;
+				
+				wsk->nick = aux->nick;
+				wsk->piosenka = aux->piosenka;
+				wsk->punkty = aux->punkty;
+
+				aux->nick = n;
+				aux->piosenka = p;
+				aux->punkty = pkt;
+			}
+			aux = aux->next;
+		}
+		wsk = wsk->next;
+	}
+	plik.close();
+	plik.open("Top10.txt", ios::out | ios::trunc);
+	wsk = head;
+	while (wsk != nullptr)
+	{
+		plik << wsk->nick << " " << wsk->punkty << " " << wsk->piosenka << endl;
+		cout << wsk->nick << " " << wsk->punkty << " " << wsk->piosenka << endl;
+		wsk = wsk->next;
+	}
+	plik.close();
+	while (wsk != nullptr)
+	{
+		lista * dd = wsk;
+		wsk = wsk->pop;
+		delete dd;
+	}
+}
+
 void silnik::start()
 {
+
+	background.setTexture(bg_texture);
 	Clock zegar;
 	Event eve;
 	music.play();
+	inGame = true;
 	while (inGame)
 	{
+		if (music.getStatus() == Music::Status::Stopped)
+		{
+			inGame = false;
+		}
 		window.clear();	// czysci okno
 		window.draw(background); //rysuje tlo
 
@@ -402,10 +603,6 @@ void silnik::start()
 			}
 			it->next_frame();
 		}
-
-	
-
-
 
 		//event jest potrzebny by okno prawidlowo dzialalo + resize okna
 		while (window.pollEvent(eve))
@@ -543,4 +740,15 @@ void silnik::start()
 			player_one.dodaj_punkty();
 		}*/
 	}
+	cout << "zapisz";
+	zapisz_wynik();
+	cout << "size" << kreski.size();
+	/*for (int i = 0; i < kreski.size(); i++)
+	{	
+		delete kreski[i];
+		kreski.erase(kreski.begin() + i);
+	}*/
+	kreski.clear();
+	kreski.shrink_to_fit();
+	cout<<"size"<<kreski.size();
 }

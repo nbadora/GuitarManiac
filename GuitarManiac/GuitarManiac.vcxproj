@@ -163,6 +163,7 @@
     <ClInclude Include="gracz.h" />
     <ClInclude Include="kreska.h" />
     <ClInclude Include="licznik.h" />
+    <ClInclude Include="lista.h" />
     <ClInclude Include="obiekt.h" />
     <ClInclude Include="przycisk.h" />
     <ClInclude Include="pulsacyjny.h" />

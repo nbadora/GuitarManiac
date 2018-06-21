@@ -9,6 +9,8 @@ using namespace sf;
 #include "pulsacyjny.h"
 #include "enum_gameState.h"
 #include <fstream>
+#include "lista.h"
+#include<string>
 
 class silnik
 {
@@ -23,6 +25,7 @@ private:
 	bool inGame;
 	Sprite background;
 	Texture bg_texture;
+	Texture menu_texture;
 	Clock muteTime;
 
 	vector <pulsacyjny> efekty_pulasacyjne;
@@ -48,6 +51,7 @@ public:
 	void menu_gry(gameState &state);
 	void loadTop(gameState &state);
 	void nowa_gra(gameState &state);
-
+	void nowy_gracz();
+	void zapisz_wynik();
 };
 

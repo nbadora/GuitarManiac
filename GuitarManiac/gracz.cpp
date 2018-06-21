@@ -69,3 +69,28 @@ int gracz::getBonus()
 {
 	return bonus;
 }
+
+void gracz::setName(string &s)
+{
+	nazwa = s;
+	punkty = 0;
+	bonus = 1;
+	wasReset = false;
+}
+
+string gracz::getName()
+{
+	return nazwa;
+}
+string gracz::getSong()
+{
+	return piosenka;
+}
+int gracz::getPoints()
+{
+	return punkty;
+}
+void gracz::setSong(string &s)
+{
+	piosenka = s;
+}

@@ -13,6 +13,8 @@ private:
 	Text liczba_punktow;
 	Font font;
 	bool wasReset;
+	string nazwa;
+	string piosenka;
 public:
 	gracz();
 	~gracz();
@@ -24,5 +26,11 @@ public:
 	bool returnReset();
 	void setResetFlag();
 	int getBonus();
+	void setName(string &s);
+	string getName();
+	string getSong();
+	int getPoints();
+	void setSong(string &s);
 };
+
 
