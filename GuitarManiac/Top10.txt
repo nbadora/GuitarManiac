@@ -1,3 +1,7 @@
+Neko 170400 ds
+s 51100 ds
+nek 43400 ds
+f 22800 ds
 UWU 4600 Bensound-Highoctane
 WPW 2800 ds
 uwu 2000 ds
@@ -5,7 +9,3 @@ qwq 1700 ds
 pppppp 1500 ds
 wow 1500 ds
 koko 1200 ds
-vvee 700 ds
-pk 600 ds
-owo 500 ds
-jhgf 200 ds

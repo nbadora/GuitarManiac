@@ -84,6 +84,14 @@ void kreska::move()
 	}
 }
 
+void kreska::correct(float y)
+{
+	for (int i = 0; i < dlugosc; i++)
+	{
+		sprite_kreski[i]->move(0, y);
+	}
+}
+
 bool kreska::poza_oknem()
 {
 	if (sprite_kreski[sprite_kreski.size()-1]->getPosition().y > 640)

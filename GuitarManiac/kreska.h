@@ -32,5 +32,7 @@ public:
 	void odblokuj_punkty();	//odblokowuje przyznawanie punktow
 	bool sprawdz_bonus();	//zwraca czy gold =true or false
 
+	void correct(float y);
+
 };
 

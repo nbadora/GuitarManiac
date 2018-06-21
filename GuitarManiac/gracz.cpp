@@ -42,11 +42,10 @@ void gracz::dodaj_punkty()
 void gracz::zwieksz_bonus()
 {
 	bonus++;
-	if (bonus > 10)
+	if (bonus > 3)
 	{
-		bonus = 10;
+		bonus = 3;
 	}
-	//(bonus > 3 ? bonus = 3 : bonus =bonus);
 }
 
 void gracz::resetBonus()

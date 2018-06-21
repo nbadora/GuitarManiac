@@ -62,11 +62,22 @@ void silnik::add_lines()
 		}
 		}
 	}
+	for (int i = 0; i < kreski.size(); i++)
+	{
+		for (int j = i + 1; j < kreski.size(); j++)
+		{
+			if (kreski[i]->koniecKreski().y < kreski[j]->poczatekKreski().y)
+			{
+				kreski[j]->correct(-50);
+			}
+		}
+	}
 }
 
 
 void silnik::check_A_button()
 {
+	bool reset = true;
 	for (auto i : kreski)
 	{
 		if (i->poczatekKreski().x == 250)	//szuka kreski na polu A
@@ -78,12 +89,18 @@ void silnik::check_A_button()
 				{
 					efekty_pulasacyjne[0].odblokuj();
 				}
+				reset = false;
 			}
 		}
+	}
+	if (reset)
+	{
+		player_one.resetBonus();
 	}
 }
 void silnik::check_S_button()
 {
+	bool reset = true;
 	for (auto i : kreski)
 	{
 		if (i->poczatekKreski().x == 350)
@@ -95,12 +112,18 @@ void silnik::check_S_button()
 				{
 					efekty_pulasacyjne[1].odblokuj();
 				}
+				reset = false;
 			}
 		}
+	}
+	if (reset)
+	{
+		player_one.resetBonus();
 	}
 }
 void silnik::check_D_button()
 {
+	bool reset = true;
 	for (auto i : kreski)
 	{
 		if (i->poczatekKreski().x == 450)
@@ -112,12 +135,18 @@ void silnik::check_D_button()
 				{
 					efekty_pulasacyjne[2].odblokuj();
 				}
+				reset = false;
 			}
 		}
+	}
+	if (reset)
+	{
+		player_one.resetBonus();
 	}
 }
 void silnik::check_F_button()
 {
+	bool reset = true;
 	for (auto i : kreski)
 	{
 		if (i->poczatekKreski().x == 550)
@@ -129,8 +158,13 @@ void silnik::check_F_button()
 				{
 					efekty_pulasacyjne[3].odblokuj();
 				}
+				reset = false;
 			}
 		}
+	}
+	if (reset)
+	{
+		player_one.resetBonus();
 	}
 }
 
@@ -733,12 +767,6 @@ void silnik::start()
 		//wyswietla okno
 		window.display();
 
-		//dodaje punkty bez przerwy
-		/*if (zegar.getElapsedTime().asMilliseconds() > 1000)
-		{
-			zegar.restart();
-			player_one.dodaj_punkty();
-		}*/
 	}
 	cout << "zapisz";
 	zapisz_wynik();
