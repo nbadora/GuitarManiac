@@ -29,6 +29,9 @@ silnik::silnik()
 	bg2.loadFromFile("grafiki/back3.png");
 	//background.setTextureRect(IntRect(0, 0, 800, 600));
 
+	hard_sprite.setTexture(menu_texture);
+	hard_sprite.setTextureRect(IntRect(0, 0, 800, 300));
+
 	music.setVolume(5);
 
 	for (int i = 0; i < 4; i++)
@@ -36,6 +39,7 @@ silnik::silnik()
 		pulsacyjny *wsk = new pulsacyjny(250 + i * 100, 500);
 		efekty_pulasacyjne.push_back(*wsk);
 	}	
+	
 }
 
 void silnik::add_lines()
@@ -74,6 +78,88 @@ void silnik::add_lines()
 	}
 }
 
+void silnik::poziom_trudnosci()
+{
+	background.setTexture(menu_texture);
+	Text text;
+	
+	Font font;
+	font.loadFromFile("WITCB.ttf");
+	text.setCharacterSize(50);
+	text.setFont(font);
+	text.setFillColor(Color::Black);
+	string s = "Ustawic tryb hard?\n     Yes\n     No";
+	string pointer = ">   <";
+	Text pt;
+	pt.setString(pointer);
+	pt.setPosition(325, 270);
+	pt.setCharacterSize(50);
+	pt.setFont(font);
+	pt.setFillColor(Color::Black);
+
+	text.setString(s);
+	text.setPosition(230, 210);
+	
+
+	bool flag = false;
+	bool up = false;
+	while(!flag)
+	{
+			Event eve;
+			window.clear();
+			while (window.pollEvent(eve))
+			{
+				if (eve.type == Event::Closed)
+				{
+					window.close();
+				}
+				if (eve.type == Event::Resized)
+				{
+					eve.Resized;
+				}
+				if (eve.type == eve.KeyPressed)
+				{
+					if (eve.key.code == Keyboard::Up)
+					{
+					
+						if (up)
+						{
+							
+							pt.move(0, -60);
+							up = false;
+						}
+					}
+					if (eve.key.code == Keyboard::Down)
+					{
+						if (!up)
+						{
+							up = true;
+							pt.move(0, 60);
+						}
+					}
+					//ENTER
+					if (eve.key.code == Keyboard::Return)
+					{
+						if (pt.getPosition().y == 270)
+						{
+							hard_level = true;
+						}
+						else
+						{
+							hard_level = false;
+						}
+						flag = true;
+					}
+				}
+			}
+			window.draw(background);
+			window.draw(pt);
+			window.draw(text);
+			
+			
+			window.display();
+		}
+}
 
 void silnik::check_A_button()
 {
@@ -778,6 +864,11 @@ void silnik::start()
 		//wyswietla aktualne punkty
 		player_one.wyswietl_punkty(&window);
 		
+		if (hard_level)
+		{
+			window.draw(hard_sprite);
+		}
+
 		//wyswietla okno
 		window.display();
 

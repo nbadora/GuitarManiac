@@ -29,7 +29,8 @@ private:
 	Texture bg2;
 	Clock muteTime;
 
-
+	bool hard_level;
+	Sprite hard_sprite;
 
 	vector <pulsacyjny> efekty_pulasacyjne;
 public:
@@ -56,5 +57,6 @@ public:
 	void nowa_gra(gameState &state);
 	void nowy_gracz();
 	void zapisz_wynik();
+	void poziom_trudnosci();
 };
 
