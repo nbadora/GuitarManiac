@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "silnik.h"
+#include<regex>
 
 
 
@@ -12,7 +13,7 @@ silnik::silnik()
 	window.create(video_mode, "Guitar Maniac", Style::Default);
 	window.setFramerateLimit(120);
 
-	srand(time(NULL));//do losowego generowania
+	srand(10);//do losowego generowania
 
 	/*buttons.push_back(new przycisk("grafiki/redbutton.png", 250, 500));
 	buttons.push_back(new przycisk("grafiki/bluebutton.png", 350, 500));
@@ -25,6 +26,7 @@ silnik::silnik()
 	background.setTexture(bg_texture);
 	background.setPosition(0, 0);
 	menu_texture.loadFromFile("grafiki/back1.png");
+	bg2.loadFromFile("grafiki/back3.png");
 	//background.setTextureRect(IntRect(0, 0, 800, 600));
 
 	music.setVolume(5);
@@ -33,9 +35,7 @@ silnik::silnik()
 	{
 		pulsacyjny *wsk = new pulsacyjny(250 + i * 100, 500);
 		efekty_pulasacyjne.push_back(*wsk);
-	}
-
-	
+	}	
 }
 
 void silnik::add_lines()
@@ -239,7 +239,7 @@ void silnik::loadTop(gameState &state)
 void silnik::nowa_gra(gameState &state)
 {
 	
-	background.setTexture(menu_texture);
+	background.setTexture(bg2);
 	Text text;
 	Font font;
 	font.loadFromFile("WITCB.ttf");
@@ -315,17 +315,29 @@ void silnik::nowa_gra(gameState &state)
 			window.display();
 		}
 	}
-	else
+	
+	//piosenki
+	string s = player_one.getSong(); 
+	if (s == "Remember")
 	{
-	//co zrobic gdy pliku nie ma
+		srand(1);
+	}
+	else if (s == "Match")
+	{
+		srand(5);
+	}
+	else if (s == "Highoctane")
+	{
+		srand(10);
 	}
 
 }
 
+
 void silnik::nowy_gracz()
 {
 	background.setTexture(menu_texture);
-	string tekst = "Podaj nazwe uzytkownika:";
+	string tekst = "Przedstaw sie:";
 	string nick;
 	Text text;
 
@@ -336,6 +348,8 @@ void silnik::nowy_gracz()
 	text.setString(tekst);
 	text.setPosition(100, 180);
 	text.setFillColor(Color::Black);
+
+	regex r("[A-Z][a-z]+");
 
 	bool good = false;
 
@@ -367,23 +381,27 @@ void silnik::nowy_gracz()
 				else if (eve.text.unicode == '\r')
 				{
 					//if nick jest dobry to zmien good  na true
-					//regex
-					cout << "good";
-					good = true;
-					player_one.setName(nick);
+					if (regex_match(nick, r))
+					{
+						cout << "good";
+						good = true;
+						player_one.setName(nick);
+					}
+					else
+					{
+						nick.clear();
+					}
 				}
 				else if (eve.text.unicode < 128)
 				{
 					nick += static_cast<char>(eve.text.unicode);
 				}
 				cout << nick << endl;
-
-			}
-		
+			}		
 		}
 
 		window.draw(background);
-		text.setPosition(100, 180);
+		text.setPosition(250, 180);
 		text.setString(tekst);
 		window.draw(text);
 
@@ -392,18 +410,14 @@ void silnik::nowy_gracz()
 		window.draw(text);
 
 		window.display();
-
-
 	}
 }
-
-
 
 
 void silnik::menu_gry(gameState &state)
 {
 	background.setTexture(menu_texture);
-	string tekst = "Nowa Runda \n  Top 10   \nWyjscie z gry\n";
+	string tekst = "Nowa runda \n  Top 10   \nWyjscie z gry\n";
 	Text text;
 	Font font;
 	font.loadFromFile("WITCB.ttf");
@@ -509,7 +523,7 @@ void silnik::zapisz_wynik()
 	string tekst;
 	lista *head = nullptr;
 	lista *wsk = nullptr;
-	cout << "1\n";
+	cout << "1 \n";
 	if (plik.is_open())
 	{
 		cout << "open666\n";
@@ -610,7 +624,7 @@ void silnik::zapisz_wynik()
 
 void silnik::start()
 {
-
+	
 	background.setTexture(bg_texture);
 	Clock zegar;
 	Event eve;

@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "gracz.h"
-
+#include <regex>
 
 gracz::gracz()
 {

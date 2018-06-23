@@ -26,7 +26,10 @@ private:
 	Sprite background;
 	Texture bg_texture;
 	Texture menu_texture;
+	Texture bg2;
 	Clock muteTime;
+
+
 
 	vector <pulsacyjny> efekty_pulasacyjne;
 public:
