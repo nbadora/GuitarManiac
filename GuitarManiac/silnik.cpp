@@ -2,9 +2,6 @@
 #include "silnik.h"
 #include<regex>
 
-
-
-
 silnik::silnik()
 {
 	
@@ -29,8 +26,8 @@ silnik::silnik()
 	bg2.loadFromFile("grafiki/back3.png");
 	//background.setTextureRect(IntRect(0, 0, 800, 600));
 
-	hard_sprite.setTexture(menu_texture);
-	hard_sprite.setTextureRect(IntRect(0, 0, 800, 300));
+	hard_sprite.setTexture(bg_texture);
+	hard_sprite.setTextureRect(IntRect(0, 0, 800, 400));
 
 	music.setVolume(5);
 
@@ -88,8 +85,8 @@ void silnik::poziom_trudnosci()
 	text.setCharacterSize(50);
 	text.setFont(font);
 	text.setFillColor(Color::Black);
-	string s = "Ustawic tryb hard?\n     Yes\n     No";
-	string pointer = ">   <";
+	string s = "Ustawic tryb hard?\n      Yes\n      No";
+	string pointer = " >   <";
 	Text pt;
 	pt.setString(pointer);
 	pt.setPosition(325, 270);
@@ -351,7 +348,7 @@ void silnik::nowa_gra(gameState &state)
 		{
 			string tekst = *piosenki[wybor];
 			text.setString(tekst);
-			text.setPosition(400 - (tekst.size() / 2) * 18, 260);
+			text.setPosition(370 - (tekst.size() / 2) * 18, 260);
 			window.clear(Color::Black);
 
 			Event eve;

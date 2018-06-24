@@ -58,5 +58,6 @@ public:
 	void nowy_gracz();
 	void zapisz_wynik();
 	void poziom_trudnosci();
+
 };
 
